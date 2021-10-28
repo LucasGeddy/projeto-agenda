@@ -1,4 +1,4 @@
-<%- include('includes/head', { pageTitle: 'Agenda - Página Inicial' }) %>
+<%- include('includes/head', { pageTitle: 'Agenda - Login' }) %>
 <%- include('includes/navbar') %>
 
   <div class="container">
@@ -9,11 +9,7 @@
         <h1 class="display-1 text-center">Entre ou Cadastre-se</h1>
         <p class="text-center lead">Faça login ou crie sua conta abaixo:</p>
 
-        <!-- <div class="row">
-          <div class="col">
-            <div class="alert alert-danger">Erro teste</div>
-          </div>
-        </div> -->
+        <%- include('includes/messages'); %> 
 
         <div class="row">
           <div class="col-lg">
@@ -45,7 +41,7 @@
                 <label class="form-label">Senha</label>
                 <input type="password" class="form-control" name="password">
               </div>
-              <button type="submit" class="btn btn-primary">Criar Conta</button>
+              <button type="submit" class="btn btn-primary">Entrar</button>
             </form>
           </div>
         </div>
