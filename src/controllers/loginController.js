@@ -1,11 +1,6 @@
 const Login = require('../models/LoginModel')
 
 exports.index = (req, res) => {
-    if (req.session.user) {
-        req.flash('errors', 'Usuário já logado. Clique em "Sair" para logar com outra conta.')
-        res.redirect('/');
-        return;
-    }
     return res.render('login');
 };
 

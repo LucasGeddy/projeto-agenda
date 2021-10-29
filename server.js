@@ -59,7 +59,6 @@ app.set('view engine', 'ejs');
 app.use(csrf());
 app.use(checkCsrfError);
 app.use(csrfMiddleware);
-app.use(middlewareGlobal);
 app.use(route);
 
 // Starting app
