@@ -13,36 +13,16 @@
 
           <div class="responsive-table">
             <table class="table my-3">
-              <tr>
-                <td>Lucas</td>
-                <td>Sussermann</td>
-                <td>11976412255</td>
-                <td>Sussermann2345@Ronaldo.com</td>
-              </tr>
-              <tr>
-                <td>Lucas</td>
-                <td>Sussermann</td>
-                <td>11976412255</td>
-                <td>Sussermann2345@Ronaldo.com</td>
-              </tr>
-              <tr>
-                <td>Lucas</td>
-                <td>Sussermann</td>
-                <td>11976412255</td>
-                <td>Sussermann2345@Ronaldo.com</td>
-              </tr>
-              <tr>
-                <td>Lucas</td>
-                <td>Sussermann</td>
-                <td>11976412255</td>
-                <td>Sussermann2345@Ronaldo.com</td>
-              </tr>
-              <tr>
-                <td>Lucas</td>
-                <td>Sussermann</td>
-                <td>11976412255</td>
-                <td>Sussermann2345@Ronaldo.com</td>
-              </tr>
+              <% contatos.forEach(contato => { %>
+                <tr>
+                  <td><%= contato.nome %></td>
+                  <td><%= contato.sobrenome %></td>
+                  <td><%= contato.email %> </td>
+                  <td><%= contato.telefone %></td>
+                  <td><a href="/contato/index/<%= contato._id %>">Editar</a></td>
+                  <td><a class="text-danger" href="/contato/delete/<%= contato._id %>">Excluir</a></td>
+                </tr>
+              <% }); %>
             </table>
           </div>
         </div>

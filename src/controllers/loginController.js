@@ -4,18 +4,18 @@ exports.index = (req, res) => {
     return res.render('login');
 };
 
-exports.register = async (req, res) => {
+exports.registrar = async (req, res) => {
     try {
         const login = new Login(req.body);
-        await login.register();
+        await login.registra();
 
-        if (login.errors.length > 0) {
-            req.flash('errors', login.errors);
+        if (login.erros.length > 0) {
+            req.flash('erros', login.erros);
             req.session.save(() => res.redirect('back'));
             return;
         }
 
-        req.flash('success', 'Usuário criado com sucesso!');
+        req.flash('successo', 'Usuário criado com sucesso!');
         req.session.save(() => res.redirect('back'));
         return;
     } catch (e) {
@@ -29,14 +29,14 @@ exports.login = async (req, res) => {
         const login = new Login(req.body);
         await login.login();
 
-        if (login.errors.length > 0) {
-            req.flash('errors', login.errors);
+        if (login.erros.length > 0) {
+            req.flash('erros', login.erros);
             req.session.save(() => res.redirect('back'));
             return;
         }
 
-        req.flash('success', 'Login efetuado com sucesso!');
-        req.session.user = login.user;
+        req.flash('successo', 'Login efetuado com sucesso!');
+        req.session.usuario = login.usuario;
         req.session.save(() => res.redirect('/'));
         return;
     } catch (e) {

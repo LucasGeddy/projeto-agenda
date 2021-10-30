@@ -5,19 +5,19 @@ exports.index = (req, res) => {
     return;
 };
 
-exports.register = async (req, res) => {    
+exports.registrar = async (req, res) => {    
     try {
-        const contato = new Contato(req.body);
+        const contato = new Contato(req.body, req.session.usuario);
         await contato.register();
 
-        if (contato.errors.length > 0) {
-            req.flash('errors', contato.errors);
+        if (contato.erros.length > 0) {
+            req.flash('erros', contato.erros);
             req.session.save(() => res.redirect('back'));
             return;
         }
 
-        req.flash('success', 'Contato registrado com sucesso.');
-        req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`)); 
+        req.flash('successo', 'Contato registrado com sucesso.');
+        req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`));
         return;
     } catch (e) {
         console.log(e);
@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.edit = async (req, res) => {
+exports.editar = async (req, res) => {
     if (!req.params.id) return res.render('404');
 
     const contato = await Contato.buscaPorId(req.params.id);
@@ -34,7 +34,7 @@ exports.edit = async (req, res) => {
     res.render('contato', { contato });
 };
 
-exports.saveEdit = async (req, res) => {
+exports.salvarEdicao = async (req, res) => {
     
     try {
         if (!req.params.id) return res.render('404');
@@ -42,13 +42,13 @@ exports.saveEdit = async (req, res) => {
         const contato = new Contato(req.body);
         await contato.edit(req.params.id);
         
-        if (contato.errors.length > 0) {
-            req.flash('errors', contato.errors);
+        if (contato.erros.length > 0) {
+            req.flash('erros', contato.erros);
             req.session.save(() => res.redirect('back'));
             return;
         }
     
-        req.flash('success', 'Contato alterado com sucesso.');
+        req.flash('successo', 'Contato alterado com sucesso.');
         req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`)); 
         return;        
     } catch (e) {

@@ -4,7 +4,7 @@ const bcryptjs = require('bcryptjs');
 
 const LoginSchema = new mongoose.Schema({
     email: { type: String, required: true },
-    password: { type: String, required: true },
+    senha: { type: String, required: true },
 });
 
 const LoginModel = mongoose.model('Login', LoginSchema);
@@ -12,46 +12,46 @@ const LoginModel = mongoose.model('Login', LoginSchema);
 class Login {
     constructor(body) {
         this.body = body;
-        this.errors = [];
-        this.user = null;
+        this.erros = [];
+        this.usuario = null;
     }
 
-    async register() {
+    async registrar() {
         this.valida();
-        if (await this.findUser()) this.errors.push('Usuário já existente!');
-        if (this.errors.length > 0) return;
+        if (await this.buscaUsuario()) this.erros.push('Usuário já existente!');
+        if (this.erros.length > 0) return;
 
         const salt = bcryptjs.genSaltSync();
-        this.body.password = bcryptjs.hashSync(this.body.password, salt);
-        this.user = await LoginModel.create(this.body);
+        this.body.senha = bcryptjs.hashSync(this.body.senha, salt);
+        this.usuario = await LoginModel.criar(this.body);
     }
 
     async login() {
         this.valida();
-        if (this.errors.length > 0) return;
+        if (this.erros.length > 0) return;
         
-        const loginFailMsg = 'Dados inválidos.';
-        this.user = await this.findUser();
-        if (!this.user) this.errors.push(loginFailMsg);
-        if (this.errors.length > 0) return;
+        const acessoFalhouMsg = 'Dados inválidos.';
+        this.usuario = await this.buscaUsuario();
+        if (!this.usuario) this.erros.push(loginFailMsg);
+        if (this.erros.length > 0) return;
 
-        if (!bcryptjs.compareSync(this.body.password, this.user.password)) {
-            this.errors.push(loginFailMsg);
-            this.user = null;
+        if (!bcryptjs.compareSync(this.body.senha, this.usuario.senha)) {
+            this.erros.push(acessoFalhouMsg);
+            this.usuario = null;
             return;
         }
     }
 
     valida() {
-        this.cleanUp();
-        if (!validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
+        this.limpaObj();
+        if (!validator.isEmail(this.body.email)) this.erros.push('E-mail inválido');
 
-        if (this.body.password.length < 8 || this.body.password.length > 50) {
-            this.errors.push('Senha inválida. A senha precisa ser composta por 8 a 50 caracteres.');
+        if (this.body.senha.length < 8 || this.body.senha.length > 50) {
+            this.erros.push('Senha inválida. A senha precisa ser composta por 8 a 50 caracteres.');
         }
     }
 
-    cleanUp() {
+    limpaObj() {
         for (const key in this.body) {
             if (typeof this.body[key] !== 'string') {
                 this.body[key] = '';
@@ -60,11 +60,11 @@ class Login {
 
         this.body = {
             email: this.body.email.toLowerCase(),
-            password: this.body.password
+            senha: this.body.senha
         }
     }
 
-    async findUser() {
+    async buscaUsuario() {
         return await LoginModel.findOne({ email: this.body.email.toLowerCase() });
     }
 }
