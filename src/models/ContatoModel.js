@@ -33,12 +33,6 @@ class Contato {
         this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
     };
 
-    async excluir(id) {
-        if (typeof id !== 'string') return;
-        const contato = await ContatoModel.findByIdAndDelete(id);
-        return contato;
-    };
-
     valida() {
         this.limpaObj();
         if (this.body.email && !validator.isEmail(this.body.email)) this.erros.push('E-mail inválido');
@@ -64,6 +58,12 @@ class Contato {
     };
 
     // Métodos estáticos
+    static async excluir(id) {
+        if (typeof id !== 'string') return;
+        const contato = await ContatoModel.findByIdAndDelete(id);
+        return contato;
+    };
+
     static async buscaPorId(id) {
         if (typeof (id) !== 'string') return;
         const contato = await ContatoModel.findById(id);
