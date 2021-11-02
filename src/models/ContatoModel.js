@@ -17,35 +17,41 @@ class Contato {
         this.body = body;
         this.erros = [];
         this.contato = null;
-    }
+    };
 
     async registra() {
         this.valida();
         if (this.erros.length > 0) return;
 
         this.contato = await ContatoModel.create(this.body);
-    }
+    };
 
-    async edit(id) {
+    async editar(id) {
         this.valida();
         if (this.erros.length > 0) return;
 
         this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
-    }
+    };
+
+    async excluir(id) {
+        if (typeof id !== 'string') return;
+        const contato = await ContatoModel.findByIdAndDelete(id);
+        return contato;
+    };
 
     valida() {
-        this.cleanUp();
+        this.limpaObj();
         if (this.body.email && !validator.isEmail(this.body.email)) this.erros.push('E-mail inválido');
 
         if (!this.body.nome) this.erros.push('Nome é obrigatório.');
         if (!this.body.email && !this.body.telefone) this.erros.push('Preencha um telefone ou email.');
-    }
+    };
 
-    cleanUp() {
+    limpaObj() {
         for (const key in this.body) {
             if (typeof this.body[key] !== 'string') {
                 this.body[key] = '';
-            }
+            };
         };
 
         this.body = {
@@ -53,22 +59,22 @@ class Contato {
             nome: this.body.nome,
             sobrenome: this.body.sobrenome,
             email: this.body.email.toLowerCase(),
-            telefone: this.body.telefone            
-        }
-    }
+            telefone: this.body.telefone
+        };
+    };
 
     // Métodos estáticos
     static async buscaPorId(id) {
-        if (typeof(id) !== 'string') return;
+        if (typeof (id) !== 'string') return;
         const contato = await ContatoModel.findById(id);
         return contato;
-    }
+    };
 
     static async buscaContatosPorUsuario(usuarioId) {
-        if (typeof(usuarioId) !== 'string') return;
-        const contatos = await ContatoModel.find({ usuarioId: usuarioId });
+        if (typeof (usuarioId) !== 'string' || !usuarioId) return [];
+        const contatos = await ContatoModel.find({ usuarioId: usuarioId }).sort({ criadoEm: -1 });
         return contatos;
-    }
+    };
 }
 
 module.exports = Contato;
