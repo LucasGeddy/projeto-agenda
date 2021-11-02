@@ -7,8 +7,9 @@ exports.index = (req, res) => {
 
 exports.registrar = async (req, res) => {    
     try {
-        const contato = new Contato(req.body, req.session.usuario);
-        await contato.register();
+        const contato = new Contato({ body: {...req.body, usuarioId: req.session.usuario }});
+        console.log(contato);
+        await contato.registra();
 
         if (contato.erros.length > 0) {
             req.flash('erros', contato.erros);

@@ -17,17 +17,17 @@ class Login {
     }
 
     async registrar() {
-        this.valida();
+        this.validar();
         if (await this.buscaUsuario()) this.erros.push('Usuário já existente!');
         if (this.erros.length > 0) return;
 
         const salt = bcryptjs.genSaltSync();
         this.body.senha = bcryptjs.hashSync(this.body.senha, salt);
-        this.usuario = await LoginModel.criar(this.body);
+        this.usuario = await LoginModel.create(this.body);
     }
 
     async login() {
-        this.valida();
+        this.validar();
         if (this.erros.length > 0) return;
         
         const acessoFalhouMsg = 'Dados inválidos.';
@@ -42,7 +42,7 @@ class Login {
         }
     }
 
-    valida() {
+    validar() {
         this.limpaObj();
         if (!validator.isEmail(this.body.email)) this.erros.push('E-mail inválido');
 

@@ -19,7 +19,7 @@ class Contato {
         this.contato = null;
     }
 
-    async register() {
+    async registra() {
         this.valida();
         if (this.erros.length > 0) return;
 
@@ -64,7 +64,7 @@ class Contato {
         return contato;
     }
 
-    static async buscaContatos(usuarioId) {
+    static async buscaContatosPorUsuario(usuarioId) {
         if (typeof(usuarioId) !== 'string') return;
         const contatos = await ContatoModel.find({ usuarioId: usuarioId });
         return contatos;

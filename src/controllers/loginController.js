@@ -7,7 +7,7 @@ exports.index = (req, res) => {
 exports.registrar = async (req, res) => {
     try {
         const login = new Login(req.body);
-        await login.registra();
+        await login.registrar();
 
         if (login.erros.length > 0) {
             req.flash('erros', login.erros);
